@@ -54,7 +54,6 @@ public class BusRouteAdapter extends RecyclerView.Adapter<BusRouteAdapter.ViewHo
         private TextView bus_duration;
         private BusOnClickListener busOnClickListener;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             bus_name = itemView.findViewById(R.id.bus_name);

@@ -1,12 +1,17 @@
 package com.rhltech.bus_route_time.data.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity(tableName = "ROUTE_TIMINGS")
 public class RouteTimingsData {
 
+    @PrimaryKey(autoGenerate = true)
     private int primaryKey = 0;
 
     @SerializedName("r002")

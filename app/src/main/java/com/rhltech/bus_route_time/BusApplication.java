@@ -2,6 +2,8 @@ package com.rhltech.bus_route_time;
 
 import android.app.Application;
 
+import com.rhltech.bus_route_time.data.database.BusDatabase;
+
 
 public class BusApplication extends Application {
 
@@ -10,8 +12,9 @@ public class BusApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        find no use as per json
+
 //        BusDatabase busDatabase = BusDatabase.configDatabase(getApplicationContext());
+//        busDatabase.getAppDao();
 
     }
 

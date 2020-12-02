@@ -26,12 +26,11 @@ public class BusViewModel extends ViewModel {
     @SuppressLint("SimpleDateFormat")
     public void configureOperations() {
         calendar = Calendar.getInstance();
-        pattern = "HH::mm";
+        pattern = "HH:mm";
         simpleDateFormat = new SimpleDateFormat(pattern);
 
         //setting current time
         currentTime = simpleDateFormat.format(calendar.getTime());
-
     }
 
     MutableLiveData<List<Timings>> filteredTime = new MutableLiveData<>();
@@ -41,12 +40,11 @@ public class BusViewModel extends ViewModel {
 
         // This method is left because of less understanding of JSON
         futureTimings.clear();
-        for (int i = 0; i <= timingsDataList.size() - 1; i++) {
+        for (int i = 0; i < timingsDataList.size(); i++) {
             startTime = simpleDateFormat.parse(timingsDataList.get(i).getTripStartTime());
             endTime = simpleDateFormat.parse(currentTime);
 
-            //Trying with Date, because im not getting any date thing from json.
-            if (startTime.before(endTime)) {
+            if (startTime.after(endTime)) {
                 futureTimings.add(timingsDataList.get(i));
             }
         }
@@ -55,5 +53,4 @@ public class BusViewModel extends ViewModel {
         }
         return filteredTime;
     }
-
 }

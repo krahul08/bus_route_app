@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.rhltech.bus_route_time.R;
 import com.rhltech.bus_route_time.data.database.AppDao;
+import com.rhltech.bus_route_time.data.database.DatabaseClient;
 import com.rhltech.bus_route_time.data.model.BusDataResponse;
 import com.rhltech.bus_route_time.data.model.RouteInfoData;
 import com.rhltech.bus_route_time.data.model.RouteTimingsData;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements BusOnClickListene
     BusViewModel viewModel;
 
 
-    private ArrayList<RouteInfoData> listToShowRoutes = new ArrayList<>();
+    private ArrayList<RouteInfoData> listToShowRoutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,29 +65,27 @@ public class MainActivity extends AppCompatActivity implements BusOnClickListene
         Log.i("data", jsonFileString);
 
         Gson gson = new Gson();
-        Type listUserType = new TypeToken<BusDataResponse>() {
+        Type listRouteType = new TypeToken<BusDataResponse>() {
         }.getType();
 
         //For Horizontal Row
-        BusDataResponse users = gson.fromJson(jsonFileString, listUserType);
-        for (int i = 0; i < users.getRouteInfo().size(); i++) {
-            listToShowRoutes.addAll(users.getRouteInfo());
+        BusDataResponse res = gson.fromJson(jsonFileString, listRouteType);
+        for (int i = 0; i < res.getRouteInfo().size(); i++) {
+            listToShowRoutes = new ArrayList<>();
+            listToShowRoutes.addAll(res.getRouteInfo());
             try {
-                appDao.insertRoute(users.getRouteInfo().get(i));
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().
+                        getAppDao().insertRoute(listToShowRoutes.get(i));
 
             } catch (Exception e) {
                 e.getMessage();
             }
         }
-
-
         //For Vertical Row
-        rootTimeData = users.getRouteTimings();
+        rootTimeData = res.getRouteTimings();
         // setting only one to check if it is working.
         setVerticalRecycler(rootTimeData.getR002());
-
     }
-
 
     private void setVerticalRecycler(List<Timings> r002) {
         busTimingAdapter = new BusTimingAdapter(this, r002);
